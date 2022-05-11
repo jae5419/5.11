@@ -1,12 +1,35 @@
 <template>
   <div id="app">
-    <nav>
+    <nav v-if="!authStatus">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/register">회원가입</router-link>
+    </nav>
+    <nav v-if="authStatus">
+      <router-link to="/main">Home</router-link> |
+      <a @click="fnLogout">로그아웃</a> |
+      <a @click="fnDeleteUser">회원탈퇴</a>
     </nav>
     <router-view/>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    authStatus() {
+      return this.$store.getters.getAuthStatus;
+    }
+  },
+  methods: {
+    fnLogout() {
+      this.$store.dispatch('LogoutUser');
+    },
+    fnDeleteUser() {
+      this.$store.dispatch('DeleteUser');
+    }
+  }
+}
+</script>
 
 <style>
 #app {
